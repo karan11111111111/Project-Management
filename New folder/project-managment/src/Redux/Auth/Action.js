@@ -14,7 +14,11 @@ export const register = (userData) => async (dispatch) => {
   dispatch({ type: REGISTER_REQUEST });
 
   try {
-    const { data } = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
+    const { data } = await axios.post(
+      `${API_BASE_URL}/auth/signup`,
+      userData
+      
+    );
 
     if (data.jwt) {
       localStorage.setItem("jwt", data.jwt);
@@ -31,7 +35,10 @@ export const login = (userData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
   try {
-    const { data } = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
+    const { data } = await axios.post(
+      `${API_BASE_URL}/auth/signin`,
+      userData
+    );
 
     if (data.jwt) {
       localStorage.setItem("jwt", data.jwt);
@@ -51,6 +58,7 @@ export const getUser = () => async (dispatch) => {
     const { data } = await axios.get(`${API_BASE_URL}/api/users/profile`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json',
       },
     });
 

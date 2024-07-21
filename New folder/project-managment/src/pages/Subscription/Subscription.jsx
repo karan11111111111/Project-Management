@@ -1,7 +1,9 @@
 import React from 'react';
 import SubscriptionCard from './SubscriptionCard';
+import { useSelector } from 'react-redux';
 
 const Subscription = () => {
+  const {subscription} =useSelector(store => store)
   const paidPlan = [
     "Add unlimited projects",
     "Access to live chat",
@@ -43,27 +45,27 @@ const Subscription = () => {
           data={{ 
             planName: "FREE", 
             features: freePlan, 
-            planType: "free", 
+            planType: "FREE", 
             price: 0, 
-            buttonName: "Current Plan" 
+            buttonName: subscription.userSubscription?.planType == "FREE" ? "Current Plan": "Get Started"
           }} 
         />
         <SubscriptionCard 
           data={{ 
             planName: "MONTHLY", 
             features: paidPlan, 
-            planType: "month", 
+            planType: "MONTHLY", 
             price: 49, 
-            buttonName: "Get Started" 
+            buttonName: subscription.userSubscription?.planType == "MONTHLY" ? "Current Plan": "Get Started"
           }} 
         />
         <SubscriptionCard 
           data={{ 
-            planName: "YEARLY", 
+            planName: "ANNUALLY", 
             features: annualPlan, 
-            planType: "year", 
+            planType: "ANNUALLY", 
             price: 411.6, 
-            buttonName: "Get Started" 
+            buttonName: subscription.userSubscription?.planType == "ANNUALLY" ? "Current Plan": "Get Started"
           }} 
         />
       </div>

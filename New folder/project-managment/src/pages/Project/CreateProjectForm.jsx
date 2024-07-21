@@ -7,34 +7,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { useDispatch } from "react-redux";
+import { createProject } from "@/Redux/Project/Action";
 
 const tags = [
-  "javascript",
-  "react",
-  "nextjs",
-  "spring boot",
-  "mysql",
-  "mongodb",
-  "angular",
-  "python",
-  "flask",
-  "django",
-  "flutter",
-  "others",
+  "javascript", "react", "nextjs", "spring boot", "mysql", 
+  "mongodb", "angular", "python", "flask", "django", "flutter", "others"
 ];
 
 function CreateProjectForms() {
+  const dispatch = useDispatch();
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -54,7 +40,16 @@ function CreateProjectForms() {
   };
 
   const onSubmit = (data) => {
-    console.log("Create project data", data);
+    dispatch(createProject(data))
+      .then(() => {
+        console.log("Project created successfully", data);
+        // Optionally, reset form values after successful submission
+        form.reset();
+      })
+      .catch((error) => {
+        console.error("Failed to create project", error);
+        // Handle error state or show user-friendly message
+      });
   };
 
   return (
@@ -101,7 +96,6 @@ function CreateProjectForms() {
             <FormItem>
               <FormControl>
                 <Select
-                  defaultValue="fullstack"
                   value={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
@@ -114,6 +108,7 @@ function CreateProjectForms() {
                     <SelectItem value="fullStack">Full Stack</SelectItem>
                     <SelectItem value="frontend">Frontend</SelectItem>
                     <SelectItem value="backend">Backend</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -159,7 +154,12 @@ function CreateProjectForms() {
             </FormItem>
           )}
         />
-        <DialogClose>
+        {/* Example of conditional rendering based on user plan */}
+        <Button type="submit" className="w-full my-5 bg-rose-700 text-rose-50">
+          Create Project
+        </Button>
+        {/* Conditionally render a message based on user plan */}
+        {/* <DialogClose>
           {false ? (
             <div>
               <p>
@@ -172,7 +172,7 @@ function CreateProjectForms() {
               Create Project
             </Button>
           )}
-        </DialogClose>
+        </DialogClose> */}
       </form>
     </Form>
   );

@@ -17,8 +17,20 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/Redux/Auth/Action";
 
-function Navbar() {
+const Navbar = () => {
+  const {auth} = useSelector(store => store)
+
+  const dispatch = useDispatch()
+
+  const handleLogout=()=>
+  {
+
+    dispatch(logout())
+  }
+
   const navigate = useNavigate();
   return (
     <div className="border-b py-4 px-5 flex items-center justify-between bg-rose-900 text-rose-100">
@@ -61,12 +73,12 @@ function Navbar() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-rose-800">
-            <DropdownMenuItem className="text-rose-100 hover:bg-rose-700">
+            <DropdownMenuItem className="text-rose-100 hover:bg-rose-700" onClick={handleLogout}>
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <p className="text-sm">Lorem, ipsum dolor</p>
+        <p className="text-sm">{auth.user?.fullName}</p>
       </div>
     </div>
   );

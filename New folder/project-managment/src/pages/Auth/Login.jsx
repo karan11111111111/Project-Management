@@ -1,16 +1,13 @@
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { useDispatch } from "react-redux";
+import { login } from "@/Redux/Auth/Action";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
 import { Button } from "@/components/ui/button";
+import React from "react";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -19,6 +16,7 @@ const Login = () => {
   });
 
   const onSubmit = (data) => {
+    dispatch(login(data)); // Assuming login action handles the API call
     console.log("Login data", data);
   };
 
@@ -61,7 +59,10 @@ const Login = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full py-3 text-lg bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors duration-300">
+          <Button
+            type="submit"
+            className="w-full py-3 text-lg bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors duration-300"
+          >
             Login
           </Button>
         </form>

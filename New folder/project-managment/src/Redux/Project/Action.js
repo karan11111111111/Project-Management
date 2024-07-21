@@ -12,15 +12,17 @@ import {
   FETCH_PROJECT_SUCCESS,
   INVITE_TO_PROJECT_REQUEST,
   INVITE_TO_PROJECT_SUCCESS,
+  INVITE_TO_PROJECT_FAILURE,
+
   SEARCH_PROJECT_REQUEST,
   SEARCH_PROJECT_SUCCESS,
 } from "./ActionType";
 
-export const fetchProjects = ({ category, tag }) => async (dispatch) => {
+export const fetchProjects = ({ category, tags }) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECT_REQUEST });
   try {
     const { data } = await api.get("/api/projects", {
-      params: { category, tag },
+      params: { category, tags },
     });
     console.log("all projects", data);
     dispatch({ type: FETCH_PROJECT_SUCCESS, projects: data });
@@ -28,6 +30,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
     console.log("error", error);
   }
 };
+
 
 export const searchProjects = (keyword) => async (dispatch) => {
   dispatch({ type: SEARCH_PROJECT_REQUEST });
@@ -56,7 +59,7 @@ export const createProject = (projectData) => async (dispatch) => {
 export const fetchProjectById = (id) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECT_BY_ID_REQUEST });
   try {
-    const { data } = await api.get(`/api/projects/${id}`);
+    const { data } = await api.get("/api/projects/"+id)
     console.log("project by id", data);
     dispatch({ type: FETCH_PROJECT_BY_ID_SUCCESS, project: data });
   } catch (error) {
@@ -64,10 +67,10 @@ export const fetchProjectById = (id) => async (dispatch) => {
   }
 };
 
-export const deleteProjectById = (projectId) => async (dispatch) => {
+export const deleteProject = (projectId) => async (dispatch) => {
   dispatch({ type: DELETE_PROJECT_REQUEST });
   try {
-    const { data } = await api.delete(`/api/projects/${projectId}`);
+    const { data } = await api.delete("/api/projects/"+projectId);
     console.log("delete project", data);
     dispatch({ type: DELETE_PROJECT_SUCCESS, projectId });
   } catch (error) {
@@ -83,6 +86,10 @@ export const inviteToProject = (email, projectId) => async (dispatch) => {
     dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
   } catch (error) {
     console.log("error", error);
+    dispatch({
+      type: INVITE_TO_PROJECT_FAILURE,
+      payload: error.response?.data?.message || error.message,
+    });
   }
 };
 

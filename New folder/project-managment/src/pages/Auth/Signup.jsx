@@ -9,8 +9,11 @@ import {
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { register } from "@/Redux/Auth/Action";// Adjust the path according to your project structure
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -20,6 +23,7 @@ const Signup = () => {
   });
 
   const onSubmit = (data) => {
+    dispatch(register(data));
     console.log("Create project data", data);
   };
 
@@ -47,7 +51,8 @@ const Signup = () => {
           />
           <FormField
             control={form.control}
-            name="fullname"
+            name="fullName"
+           
             render={({ field }) => (
               <FormItem>
                 <FormControl>

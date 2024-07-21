@@ -9,6 +9,8 @@ import {
     FETCH_PROJECT_REQUEST,
     FETCH_PROJECT_SUCCESS,
     INVITE_TO_PROJECT_REQUEST,
+    INVITE_TO_PROJECT_FAILURE,
+
     INVITE_TO_PROJECT_SUCCESS, // Add if you have a corresponding success action
     SEARCH_PROJECT_REQUEST, // Add if you have a corresponding request action
     SEARCH_PROJECT_SUCCESS,
@@ -29,6 +31,7 @@ import {
       case DELETE_PROJECT_REQUEST:
       case FETCH_PROJECT_BY_ID_REQUEST:
       case ACCEPT_INVITATION_REQUEST:
+        
       case INVITE_TO_PROJECT_REQUEST:
       case SEARCH_PROJECT_REQUEST:
         return {
@@ -41,7 +44,7 @@ import {
         return {
           ...state,
           loading: false,
-          projects: action.payload,
+          projects: action.projects,
           error: null,
         };
   
@@ -49,7 +52,7 @@ import {
         return {
           ...state,
           loading: false,
-          searchProjects: action.payload,
+          searchProjects: action.projects,
           error: null,
         };
   
@@ -65,7 +68,7 @@ import {
         return {
           ...state,
           loading: false,
-          projectDetails: action.payload,
+          projectDetails: action.project,
           error: null,
         };
   
@@ -74,10 +77,24 @@ import {
           ...state,
           loading: false,
           projects: state.projects.filter(
-            (project) => project.id === action.projectId
+            (project) => project.id !== action.projectId
           ),
           error: null,
         };
+
+        case INVITE_TO_PROJECT_SUCCESS:
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+    
+        case INVITE_TO_PROJECT_FAILURE:
+          return {
+            ...state,
+            loading: false,
+            error: action.payload,
+          };
   
       default:
         return state;
